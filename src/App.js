@@ -1,25 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import "./App.css";
+import SignIn from "./components/SignIn";
+import OtpVerify from "./components/OtpVerify";
+import DashBoard from "./components/DashBoard";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	const [otp, setOtp] = useState("");
+
+	const [step, setStep] = useState(
+		() => JSON.parse(localStorage.getItem("step")) || 0
+	);
+
+	const [formData, setFormData] = useState({
+		phone: "",
+	});
+
+	if (step === 0)
+		return (
+			<SignIn setStep={setStep} formData={formData} setFormData={setFormData} />
+		);
+	else if (step === 1)
+		return (
+			<OtpVerify
+				setStep={setStep}
+				formData={formData}
+				otp={otp}
+				setOtp={setOtp}
+				step={step}
+			/>
+		);
+	else if (step === 2) return <DashBoard />;
 }
 
 export default App;
